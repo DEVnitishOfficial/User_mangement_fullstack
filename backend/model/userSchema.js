@@ -1,5 +1,7 @@
-const { Schema, default: mongoose } = require('mongoose');
+const { Schema, mongoose } = require('mongoose');
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
+const JWT = require('jsonwebtoken')
 
 const userSchema = new Schema(
     {
@@ -32,17 +34,30 @@ const userSchema = new Schema(
 }
 );
     userSchema.pre("save", async function(next){
-        if(!this.isModified('password')) return next() //here this refers to the current document of your db
+        if(!this.isModified('password')){
+            return next()
+        }  //here this refers to the current document of your db
         this.password = await bcrypt.hash(this.password, 10) //hashing password with bcrypt hasing algorithem.(salt)
         return next();
     })
 
     userSchema.methods = {
         jwtToken(){
-
+            return JWT.sign(
+                {id:this._id, email:this.email},
+                process.env.SECRET,
+                {expiresIn:'24h'}
+            )
         },
-        forgetPasswordToken(){
-            
+        getforgetPasswordToken(){
+          const forgotToken = crypto.randomBytes(20).toString('hex')
+          this.forgetPasswordToken = crypto
+          .createHash('sha256')
+          .update('forgotToken')
+          .digest('hex')
+
+          this.forgotPasswordExpiryDate = Date.now() + 20*60*1000;
+          return forgotToken
         }
     }
 const userModel = mongoose.model("instaUserManagement", userSchema);
