@@ -1,6 +1,8 @@
 const emailValidator = require("email-validator");
 const userModel = require("../model/userSchema.js");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+
 
 /******************************************************
  * @SIGNUP
@@ -12,14 +14,15 @@ const bcrypt = require("bcrypt");
  ******************************************************/
 
 const signup = async (req, res, next) => {
-  const { name, email, password, confirmPassword } = req.body;
-  console.log(name, email, password, confirmPassword);
+  const { name, userName, email, password, confirmPassword, bio } = req.body;
+  console.log('body request',req.body)
+  // console.log(name, userName, email, password, confirmPassword, bio);
 
   // validating all input field in the form
-  if (!name || !email || !password || !confirmPassword) {
+  if (!name || !userName || !email || !password || !bio) {
     return res.status(400).json({
       success: false,
-      message: "all fields are required",
+      message: "all fields are required"
     });
   }
   const varifiedEmail = emailValidator.validate(email);
@@ -30,12 +33,12 @@ const signup = async (req, res, next) => {
     });
   }
 
-  if (password !== confirmPassword) {
-    return res.status(400).json({
-      success: false,
-      message: "password and confirm password doesn't match",
-    });
-  }
+  // if (password !== confirmPassword) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     message: "password and confirm password doesn't match",
+  //   });
+  // }
 
   try {
     const userDetails = new userModel(req.body);

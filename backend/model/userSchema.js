@@ -12,6 +12,13 @@ const userSchema = new Schema(
         maxLength : [50, "Name should not exceede 50 character"],
         trim : true
     },
+    userName : {
+        type : String,
+        required : [true, "userName is required"],
+        minlength : [5, "Name should be at least 5 Character"],
+        maxLength : [50, "Name should not exceede 50 character"],
+        trim : true
+    },
     email : {
         type : String,
         required : [true, 'A valid email is required'],
@@ -21,6 +28,10 @@ const userSchema = new Schema(
     password : {
         type : String,
         select : false
+    },
+    bio : {
+        type : String,
+        required : true
     },
     forgetPasswordToken : {
         type : String,
