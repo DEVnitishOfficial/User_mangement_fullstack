@@ -71,19 +71,19 @@ const signup = async (req, res, next) => {
  ******************************************************/
 
 const signin = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { userName, password } = req.body;
 
-  if (!email || !password) {
+  if (!userName || !password) {
     return res.status(400).json({
       success: false,
-      message: "email and password both are required",
+      message: "userName and password both are required",
     });
   }
 
   try {
     const user = await userModel
       .findOne({
-        email,
+        userName,
       })
       .select("password");
 

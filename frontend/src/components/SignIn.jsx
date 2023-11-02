@@ -7,7 +7,7 @@ function SignIn(){
 
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({ 
-    email: "",
+    userName: "",
     password: ""
     });
 
@@ -54,9 +54,9 @@ function SignIn(){
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             placeholder="nitish"
             required
-            value={credentials.email}
+            value={credentials.userName}
             onChange={(e) =>
-              setCredentials({ ...credentials, email: e.target.value })}
+              setCredentials({ ...credentials, userName: e.target.value })}
           />
         </div>
         {/* your username end */}
