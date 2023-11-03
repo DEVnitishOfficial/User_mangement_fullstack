@@ -125,39 +125,46 @@ const signin = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   const email = req.body.email;
+  console.log('email',email)
+
+  // return response with error message If email is undefined
   if (!email) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
-      message: "email is required to forget password",
+      message: "Email is required"
     });
   }
 
   try {
-    const user = userModel.findOne({
-      email,
+    // retrieve user using given email.
+    const user = await userModel.findOne({
+      email
     });
+
+    // return response with error message user not found
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        message: "user not found",
+        message: "user not found 🙅"
       });
     }
 
-    const forgetPassToken = user.getforgetPasswordToken();
+    // Generate the token with userSchema method getForgotPasswordToken().
+    const forgotPasswordToken = user.getForgotPasswordToken();
 
-    await user.save;
+    await user.save();
+
     return res.status(200).json({
       success: true,
-      token: forgetPassToken,
+      token: forgotPasswordToken
     });
   } catch (error) {
     return res.status(400).json({
       success: false,
-      message : error.message,
+      message: error.message
     });
   }
 };
-
 /******************************************************
  * @RESETPASSWORD
  * @route /api/insta/resetpassword/:token
@@ -168,6 +175,8 @@ const forgotPassword = async (req, res, next) => {
 const resetPassword = async (req, res, next) => {
   const { token } = req.params;
   const { password, confirmPassword } = req.body;
+
+  console.log('password',password,confirmPassword,token)
 
   if (!password || !confirmPassword) {
     return res.status(400).json({
@@ -208,7 +217,7 @@ const resetPassword = async (req, res, next) => {
   } catch (error) {
     return res.status(400).json({
       success: false,
-      message: error.message,
+      message:'something is  wrong',
     });
   }
 };

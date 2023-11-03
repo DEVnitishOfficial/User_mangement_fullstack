@@ -97,7 +97,7 @@ function SignIn(){
         {/* create account(signup) */}
         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
 
-          <Link to="/forgot-password"
+          <Link to="/forgotPassword"
             className="ml-auto text-sm text-blue-700 hover:underline dark:text-blue-500">  
            Forgot Password 
           </Link>

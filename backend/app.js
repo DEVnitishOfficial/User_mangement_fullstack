@@ -14,10 +14,7 @@ app.use(cors({ origin: [process.env.CLIENT_URL], credentials: true })); //Third-
 
 app.use("/api/insta/", instaRouter);
 app.use("/", (req, res) => {
-  res.status(200).json({
-    success: "true",
-    message: "fullStack userManagement app like Instagram",
-  });
+  res.status(200).json({ data: "Insta server" });
 });
 
 module.exports = app;

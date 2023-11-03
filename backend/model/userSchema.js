@@ -1,4 +1,5 @@
-const { Schema, mongoose } = require('mongoose');
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const JWT = require('jsonwebtoken')
@@ -33,7 +34,7 @@ const userSchema = new Schema(
         type : String,
         required : true
     },
-    forgetPasswordToken : {
+    forgotPasswordToken : {
         type : String,
     },
     forgotPasswordExpiryDate : {
@@ -60,16 +61,20 @@ const userSchema = new Schema(
                 {expiresIn:'24h'}
             )
         },
-        getforgetPasswordToken(){
-          const forgotToken = crypto.randomBytes(20).toString('hex')
-          this.forgetPasswordToken = crypto
-          .createHash('sha256')
-          .update('forgotToken')
-          .digest('hex')
-
-          this.forgotPasswordExpiryDate = Date.now() + 20*60*1000;
-          return forgotToken
-        }
+        getForgotPasswordToken() {
+            const forgotToken = crypto.randomBytes(20).toString('hex');
+            //step 1 - save to DB
+            this.forgotPasswordToken = crypto
+              .createHash('sha256')
+              .update(forgotToken)
+              .digest('hex');
+        
+            /// forgot password expiry date
+            this.forgotPasswordExpiryDate = Date.now() + 20 * 60 * 1000; // 20min
+        
+            //step 2 - return values to user
+            return forgotToken;
+          },
     }
 const userModel = mongoose.model("instaUserManagement", userSchema);
 module.exports = userModel;
