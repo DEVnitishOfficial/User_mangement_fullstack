@@ -14,6 +14,7 @@ function SignUp() {
   });
 
   const URL = import.meta.env.VITE_REACT_APP_URL;
+  console.log('url',URL)
 
   async function handleSignup(e){
     e.preventDefault();
